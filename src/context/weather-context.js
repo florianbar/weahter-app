@@ -1,55 +1,37 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 
 const API_KEY = "d1532124114bf335227917703493e10e";
 
 export const WeatherContext = React.createContext({
     city: "",
-    forecastList: [],
-    forecastNow: [],
-    fetchCityForecast: () => {}
+    forecast: [],
+    fetchForecast: () => {}
 });
 
 export default props => {
     const [city, setCity] = useState("");
-    const [forecastList, setForecastList] = useState(null);
-    const [forecastNowList, setForecastNowList] = useState(null);
+    const [forecast, setForecast] = useState(null);
 
-    useEffect(() => {
-        if (forecastList) {
-            let date = new Date();
-            const forecastNowList = forecastList.filter(forecast => {
-                const forecastDate = new Date(forecast.dt_txt);
-                if (date.getDate() === forecastDate.getDate()) {
-                    date.setDate(date.getDate() + 1); // increment day
-                    return true;
-                }
-            });
-
-            setForecastNowList(forecastNowList);
-        }
-    }, [forecastList, setForecastNowList]);
-
-    const fetchCityForecast = useCallback(city => {
+    const fetchForecast = useCallback(city => {
         setCity(city);
         localStorage.setItem("city", city);
 
         axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`)
             .then(response => {
                 console.log(response.data);
-                setForecastList(response.data.list);
+                setForecast(response.data.list);
             })
             .catch(error => {
                 console.log(error);
             });
-    }, [setCity, setForecastList]);
+    }, [setCity, setForecast]);
 
     return (
         <WeatherContext.Provider value={{
             city: city,
-            forecastList: forecastList,
-            forecastNowList: forecastNowList,
-            fetchCityForecast: fetchCityForecast
+            forecast: forecast,
+            fetchForecast: fetchForecast
         }}>
             {props.children}
         </WeatherContext.Provider>
