@@ -1,41 +1,27 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { WeatherContext } from '../context/weather-context';
 
 const DayForecast = ({ location }) => {
-    const [city, setCity] = useState(null);
-    const [date, setDate] = useState(null);
-    const [dayForecast, setDayForecast] = useState(null);
+    const [city] = useState(new URLSearchParams(location.search).get("city"));
+    const [date] = useState(new URLSearchParams(location.search).get("date"));
 
-    const { forecast, fetchForecast } = useContext(WeatherContext);
-
-    const updateDayForecast = useCallback(date => {
-        let day = new Date(date);
-
-        const dayForecast = forecast.filter(item => {
-            const forecastDate = new Date(item.dt_txt);
-            return day.getDate() === forecastDate.getDate();
-        });
-
-        setDayForecast(dayForecast);
-    }, [forecast, setDayForecast]);
+    const { 
+        forecast, 
+        fetchForecast, 
+        getDayForecast 
+    } = useContext(WeatherContext);
 
     useEffect(() => {
-        const cityParam = new URLSearchParams(location.search).get("city");
-        const dateParam = new URLSearchParams(location.search).get("date");
-        setCity(cityParam);
-        setDate(dateParam);
-
+        // Only fetch forecast data if it hasn't been fetched yet
         if (!forecast) {
-            fetchForecast(cityParam);
-        } else {
-            updateDayForecast(dateParam);
+            fetchForecast(city);
         }
-    }, [location, forecast, fetchForecast, updateDayForecast]);
+    }, [forecast, fetchForecast, city]);
 
     let dayForecastContent = null;
-    if (dayForecast) {
-        dayForecastContent = dayForecast.map(forecast => {
+    if (forecast) {
+        dayForecastContent = getDayForecast(forecast, date).map(forecast => {
             return (
                 <li key={forecast.dt}>
                     {forecast.dt_txt}<br />
@@ -48,7 +34,7 @@ const DayForecast = ({ location }) => {
     return (
         <div>
             <h1>{city}, {date}</h1>
-            {!dayForecastContent ? "Loading forecast..." : (
+            {!forecast ? "Loading forecast..." : (
                 <ul>
                     {dayForecastContent}
                 </ul>

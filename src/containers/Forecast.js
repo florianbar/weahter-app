@@ -1,29 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { WeatherContext } from '../context/weather-context';
 
 const Forecast = ({ location }) => {
-    const { city, forecast, fetchForecast } = useContext(WeatherContext);
+    const [city] = useState(new URLSearchParams(location.search).get("city"));
+
+    const { 
+        forecast, 
+        fetchForecast, 
+        getCurrentForecast 
+    } = useContext(WeatherContext);
 
     useEffect(() => {
-        const cityParam = new URLSearchParams(location.search).get("city");
-        fetchForecast(cityParam);
-    }, [location, fetchForecast]);
+        fetchForecast(city);
+    }, [fetchForecast, city]);
 
     let forecastList = null;
     if (forecast) {
-        let date = new Date();
-        const currentForecast = forecast.filter(item => {
-            const forecastDate = new Date(item.dt_txt);
-            if (date.getDate() === forecastDate.getDate()) {
-                date.setDate(date.getDate() + 1); // increment day
-                return true;
-            }
-            return false;
-        });
-
-        forecastList = currentForecast.map(forecast => {
+        forecastList = getCurrentForecast(forecast).map(forecast => {
             return (
                 <li key={forecast.dt}>
                     <Link to={`/forecast/day?city=${city}&date=${forecast.dt_txt}`}>
