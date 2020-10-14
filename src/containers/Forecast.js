@@ -3,6 +3,7 @@ import { Row, Col, Button, Spinner } from 'reactstrap';
 
 import { WeatherContext } from '../context/weather-context';
 import WeekForecast from '../components/WeekForecast';
+import FasIcon from '../components/FasIcon';
 
 const Forecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
@@ -35,14 +36,17 @@ const Forecast = ({ history, location }) => {
         <React.Fragment>
             <Row className="mb-3">
                 <Col>
-                    <h1>{city}</h1>
+                    <h2>{city}</h2>
                 </Col>
                 <Col sm={{ size: 'auto' }}>
                     <Button 
                         color="primary" 
                         size="sm" 
                         onClick={() => history.push('/')}
-                    >Change location</Button>
+                    >
+                        <FasIcon icon="fa-location-arrow" className="mr-2" />
+                        Change Location
+                    </Button>
                 </Col>
             </Row>
             {content}

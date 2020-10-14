@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import { WeatherContext } from '../context/weather-context';
 import HourlyForecast from '../components/HourlyForecast';
+import FasIcon from '../components/FasIcon';
 
 const DayForecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
@@ -21,18 +22,6 @@ const DayForecast = ({ history, location }) => {
             fetchForecastData(city);
         }
     }, [forecast, fetchForecastData, city]);
-
-    // let forecastList = null;
-    // if (forecast) {
-    //     forecastList = getDayForecast(forecast, date).map(forecast => {
-    //         return (
-    //             <li key={forecast.dt}>
-    //                 {forecast.dt_txt}<br />
-    //                 {forecast.weather[0].description}
-    //             </li>
-    //         );
-    //     });
-    // }
 
     let content = (
         <div className="text-center">
@@ -52,16 +41,19 @@ const DayForecast = ({ history, location }) => {
         <React.Fragment>
             <Row className="mb-3">
                 <Col>
-                    <h1>
-                        {city}, <small>{moment(date).format("dddd DD MMMM YYYY")}</small>
-                    </h1>
+                    <h2>
+                        {city} <small>| {moment(date).format("dddd DD MMMM YYYY")}</small>
+                    </h2>
                 </Col>
                 <Col sm={{ size: 'auto' }}>
                     <Button 
                         color="primary" 
                         size="sm" 
                         onClick={() => history.push(`/forecast?city=${city}`)}
-                    >Choose a different day</Button>
+                    >
+                        <FasIcon icon="fa-calendar-day" className="mr-2" />
+                        Change Day
+                    </Button>
                 </Col>
             </Row>
             {content}

@@ -3,62 +3,49 @@ import { Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
 import moment from 'moment';
 
 import WeatherIcon from '../components/WeatherIcon';
-//import styled from 'styled-components';
+import FasIcon from '../components/FasIcon';
 
-// const StyledUl = styled.ul`
-//     padding: 0;
-//     list-style: none;
-// `;
-
-// const StyledLi = styled.li`
-//     &:hover {
-//         cursor: pointer;
-//     }
-
-//     .date {
-//         color: #1a73e8;
-//         font-weight: 700;
-//         font-size: 16px;
-//     }
-
-//     .condition {
-//         text-transform: capitalize;
-//         font-style: italic;
-//         color: #666;
-//     }
-// `;
-
-const HourlyForecast = ({ history, city, forecast }) => {
+const HourlyForecast = ({ forecast }) => {
     const list = forecast.map(forecast => {
         return (
             <ListGroupItem 
-                key={forecast.dt} 
-                tag="button"
-                action 
-                onClick={() => history.push(`/forecast/day?city=${city}&date=${forecast.dt_txt}`)}
+                key={forecast.dt}
+                className="shadow-sm"
             >
-                <Row sm="5">
-                    <Col>
-                        <WeatherIcon 
-                            iconCode={forecast.weather[0].icon} 
-                            alt={forecast.weather[0].description} 
-                        />
+                <Row>
+                    <Col sm="3">
+                        <Row noGutters>
+                            <Col sm={{ size: 'auto' }}>
+                                <WeatherIcon 
+                                    iconCode={forecast.weather[0].icon} 
+                                    alt={forecast.weather[0].description} 
+                                    size="sm"
+                                />
+                            </Col>
+                            <Col>
+                                <span className="ml-2 text-capitalize">{forecast.weather[0].description}</span>
+                            </Col>
+                        </Row>
                     </Col>
                     <Col>
-                        <div className="date">
-                            {moment(forecast.dt_txt).format("HH")}:00
-                        </div>
-                        <div className="condition">
-                            {forecast.weather[0].description}
-                        </div>
+                        <FasIcon icon="fa-clock" color="#ccc" className="mr-2" />
+                        <b>{moment(forecast.dt_txt).format("HH")}:00</b>
                     </Col>
                     <Col>
-                        <b>Temp High:</b> {parseInt(forecast.main.temp_max / 10)}&#8451;<br />
-                        <b>Temp Low:</b> {parseInt(forecast.main.temp_min / 10)}&#8451;<br />
+                        <FasIcon icon="fa-arrow-up" color="red" className="mr-2" /> 
+                        {parseInt(forecast.main.temp_max / 10)}&#8451;
                     </Col>
                     <Col>
-                        <b>Wind</b> {forecast.wind.speed} m/s<br />
-                        <b>Clouds:</b> {forecast.clouds.all}%
+                        <FasIcon icon="fa-arrow-down" color="#007bff" className="mr-2" /> 
+                        {parseInt(forecast.main.temp_min / 10)}&#8451;
+                    </Col>
+                    <Col>
+                        <FasIcon icon="fa-wind" color="#07cdff" className="mr-2" />
+                        {forecast.wind.speed} m/s<br />
+                    </Col>
+                    <Col>
+                        <FasIcon icon="fa-cloud" color="#ccc" className="mr-2" />
+                        {forecast.clouds.all}%
                     </Col>
                 </Row>
             </ListGroupItem>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 import WeatherProvider from './context/weather-context';
-import Layout from './hoc/Layout';
 import Landing from './containers/Landing';
 import Forecast from './containers/Forecast';
 import DayForecast from './containers/DayForecast';
@@ -10,7 +10,7 @@ import DayForecast from './containers/DayForecast';
 const App = () => {
   return (
     <div className="App">
-      <Layout>
+      <Container className="mt-4">
         <WeatherProvider>
           <Switch>
             <Route path="/forecast/day" component={DayForecast} />
@@ -19,7 +19,7 @@ const App = () => {
             <Redirect to="/" />
           </Switch>
         </WeatherProvider>
-      </Layout>
+      </Container>
     </div>
   );
 };
