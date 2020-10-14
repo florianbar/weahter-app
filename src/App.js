@@ -6,7 +6,6 @@ import Layout from './hoc/Layout';
 import Landing from './containers/Landing';
 import Forecast from './containers/Forecast';
 import DayForecast from './containers/DayForecast';
-import './App.css';
 
 const App = () => {
   return (

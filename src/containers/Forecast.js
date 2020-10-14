@@ -1,9 +1,8 @@
 import React, { useContext, useEffect } from 'react';
+import { Row, Col, Button, Spinner } from 'reactstrap';
 
 import { WeatherContext } from '../context/weather-context';
-import WeatherList from '../components/WeatherList';
-import Button from '../components/UI/Button';
-import Spinner from '../components/UI/Spinner';
+import WeekForecast from '../components/WeekForecast';
 
 const Forecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
@@ -18,21 +17,36 @@ const Forecast = ({ history, location }) => {
         fetchForecastData(city);
     }, [fetchForecastData, city]);
 
-    let weekForecast = forecast ? getWeekForecast(forecast) : null;
+    let content = (
+        <div className="text-center">
+            <Spinner color="primary" size="lg" />
+        </div>
+    );
+    if (forecast) {
+        content = (
+            <WeekForecast 
+                city={city} 
+                forecast={getWeekForecast(forecast)} 
+            />
+        );
+    }
 
     return (
-        <div>
-            <div className="row mb-3">
-                <div className="col-sm">
+        <React.Fragment>
+            <Row className="mb-3">
+                <Col>
                     <h1>{city}</h1>
-                </div>
-                <div className="col-sm-auto">
-                    <Button size="sm" clicked={() => history.push('/')}>Change Location</Button>
-                </div>
-            </div>
-            
-            {!forecast ? <Spinner /> : <WeatherList city={city} forecast={weekForecast} /> }
-        </div>
+                </Col>
+                <Col sm={{ size: 'auto' }}>
+                    <Button 
+                        color="primary" 
+                        size="sm" 
+                        onClick={() => history.push('/')}
+                    >Change location</Button>
+                </Col>
+            </Row>
+            {content}
+        </React.Fragment>
     );
 };
 

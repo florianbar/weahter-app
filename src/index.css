@@ -2,12 +2,3 @@ body {
   background-color: #eee;
   color: #333;
 }
-
-a {
-  color: #1a73e8;
-  text-decoration: none;
-}
-a:hover {
-  color: #1666d0;
-  text-decoration: underline;
-}

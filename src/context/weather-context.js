@@ -24,11 +24,11 @@ export default props => {
     }, [setForecast]);
 
     const getWeekForecast = forecast => {
-        let date = new Date();
+        let date = new Date(forecast[0].dt_txt);
 
         return forecast.filter(item => {
             const forecastDate = new Date(item.dt_txt);
-            if (date.getDate() === forecastDate.getDate()) {
+            if (date.getHours() === forecastDate.getHours()) {
                 date.setDate(date.getDate() + 1);
                 return true;
             }
