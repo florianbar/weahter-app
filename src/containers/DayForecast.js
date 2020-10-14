@@ -1,27 +1,27 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { WeatherContext } from '../context/weather-context';
 
 const DayForecast = ({ location }) => {
-    const [city] = useState(new URLSearchParams(location.search).get("city"));
-    const [date] = useState(new URLSearchParams(location.search).get("date"));
+    const city = new URLSearchParams(location.search).get("city");
+    const date = new URLSearchParams(location.search).get("date");
 
     const { 
         forecast, 
-        fetchForecast, 
+        fetchForecastData, 
         getDayForecast 
     } = useContext(WeatherContext);
 
     useEffect(() => {
         // Only fetch forecast data if it hasn't been fetched yet
         if (!forecast) {
-            fetchForecast(city);
+            fetchForecastData(city);
         }
-    }, [forecast, fetchForecast, city]);
+    }, [forecast, fetchForecastData, city]);
 
-    let dayForecastContent = null;
+    let forecastList = null;
     if (forecast) {
-        dayForecastContent = getDayForecast(forecast, date).map(forecast => {
+        forecastList = getDayForecast(forecast, date).map(forecast => {
             return (
                 <li key={forecast.dt}>
                     {forecast.dt_txt}<br />
@@ -36,7 +36,7 @@ const DayForecast = ({ location }) => {
             <h1>{city}, {date}</h1>
             {!forecast ? "Loading forecast..." : (
                 <ul>
-                    {dayForecastContent}
+                    {forecastList}
                 </ul>
             )}
         </div>

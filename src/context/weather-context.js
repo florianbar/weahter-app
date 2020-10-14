@@ -1,22 +1,19 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 
-const API_KEY = "d1532124114bf335227917703493e10e";
-
 export const WeatherContext = React.createContext({
     forecast: [],
-    fetchForecast: () => {},
-    getCurrentForecast: () => {},
+    fetchForecastData: () => {},
+    getWeekForecast: () => {},
     getDayForecast: () => {}
 });
 
 export default props => {
     const [forecast, setForecast] = useState(null);
 
-    const fetchForecast = useCallback(city => {
-        localStorage.setItem("city", city);
-
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`)
+    const fetchForecastData = useCallback(city => {
+        const queryParams = `?q=${city}&appid=${process.env.REACT_APP_OPENWEATHER_APP_KEY}`;
+        axios.get("https://api.openweathermap.org/data/2.5/forecast" + queryParams)
             .then(response => {
                 console.log(response.data);
                 setForecast(response.data.list);
@@ -26,9 +23,10 @@ export default props => {
             });
     }, [setForecast]);
 
-    const getCurrentForecast = forecast => {
+    const getWeekForecast = forecast => {
         let date = new Date();
-        const currentForecast = forecast.filter(item => {
+
+        return forecast.filter(item => {
             const forecastDate = new Date(item.dt_txt);
             if (date.getDate() === forecastDate.getDate()) {
                 date.setDate(date.getDate() + 1);
@@ -36,26 +34,22 @@ export default props => {
             }
             return false;
         });
-
-        return currentForecast;
     };
 
     const getDayForecast = (forecast, date) => {
         let day = new Date(date);
 
-        const dayForecast = forecast.filter(item => {
+        return forecast.filter(item => {
             const forecastDate = new Date(item.dt_txt);
             return day.getDate() === forecastDate.getDate();
         });
-
-        return dayForecast;
     };
 
     return (
         <WeatherContext.Provider value={{
             forecast: forecast,
-            fetchForecast: fetchForecast,
-            getCurrentForecast: getCurrentForecast,
+            fetchForecastData: fetchForecastData,
+            getWeekForecast: getWeekForecast,
             getDayForecast: getDayForecast
         }}>
             {props.children}
