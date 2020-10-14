@@ -9,10 +9,14 @@ const StyledButton = styled.button`
     }
 `;
 
-const Button = ({clicked, children}) => {
+const Button = ({clicked, children, size}) => {
+    const buttonClasses = ["btn", "btn-primary"];
+    if (size === "sm") {
+        buttonClasses.push("btn-sm");
+    }
     return (
         <StyledButton 
-            className="btn btn-primary" 
+            className={buttonClasses.join(" ")}
             onClick={clicked}
         >
             {children}

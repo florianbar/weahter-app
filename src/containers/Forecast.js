@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 import { WeatherContext } from '../context/weather-context';
 import WeatherList from '../components/WeatherList';
+import Button from '../components/UI/Button';
+import Spinner from '../components/UI/Spinner';
 
-const Forecast = ({ location }) => {
+const Forecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
 
     const { 
@@ -23,14 +24,14 @@ const Forecast = ({ location }) => {
         <div>
             <div className="row mb-3">
                 <div className="col-sm">
-                    <h1>Forecast for {city}</h1>
+                    <h1>{city}</h1>
                 </div>
                 <div className="col-sm-auto">
-                    <Link to="/" className="btn btn-sm btn-secondary mt-3">Change Location</Link>
+                    <Button size="sm" clicked={() => history.push('/')}>Change Location</Button>
                 </div>
             </div>
             
-            {!forecast ? "Loading forecast..." : <WeatherList city={city} forecast={weekForecast} /> }
+            {!forecast ? <Spinner /> : <WeatherList city={city} forecast={weekForecast} /> }
         </div>
     );
 };

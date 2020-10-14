@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledLabel = styled.label`
-    font-weight: 600;
-`;
-
 const styles = `
     display: inline-block;
     width: 100%;
@@ -19,7 +15,6 @@ const StyledInput = styled.input`${styles}`;
 const StyledSelect = styled.select`${styles}`;
 
 const Input = ({
-    label,
     elementType, 
     type, 
     value, 
@@ -60,7 +55,6 @@ const Input = ({
 
     return (
         <div className="form-group">
-            <StyledLabel className="form-label">{label}</StyledLabel>
             {inputElement}
         </div>
     );

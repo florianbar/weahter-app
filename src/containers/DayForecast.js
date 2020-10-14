@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { WeatherContext } from '../context/weather-context';
+import Spinner from '../components/UI/Spinner';
 
 const DayForecast = ({ location }) => {
     const city = new URLSearchParams(location.search).get("city");
@@ -34,7 +35,7 @@ const DayForecast = ({ location }) => {
     return (
         <div>
             <h1>{city}, {date}</h1>
-            {!forecast ? "Loading forecast..." : (
+            {!forecast ? <Spinner /> : (
                 <ul>
                     {forecastList}
                 </ul>

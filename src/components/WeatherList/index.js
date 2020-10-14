@@ -1,8 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 import styled from 'styled-components';
-
-import Button from '../UI/Button';
 
 const StyledUl = styled.ul`
     padding: 0;
@@ -13,10 +12,10 @@ const StyledLi = styled.li`
     &:hover {
         cursor: pointer;
     }
-    
+
     .date {
-        font-weight: 700;
         color: #1a73e8;
+        font-weight: 700;
         font-size: 16px;
     }
 
@@ -28,36 +27,27 @@ const StyledLi = styled.li`
 `;
 
 const WeatherList = ({ history, city, forecast }) => {
-    const clickHandler = date => {
-        history.push(`/forecast/day?city=${city}&date=${date}`);
-    };
-
-    const getFormattedDate = datetime => {
-        let date = new Date(datetime);
-        const weekday = date.toLocaleString('default', { weekday: 'long' });
-        const month = date.toLocaleString('default', { month: 'long' });
-        const year = date.getFullYear();
-        const day = date.getDate();
-        return `${weekday} ${day} ${month} ${year}`;
-    };
-
     const list = forecast.map(forecast => {
         return (
             <StyledLi 
                 key={forecast.dt} 
-                onClick={() => clickHandler(forecast.dt_txt)}
+                onClick={() => history.push(`/forecast/day?city=${city}&date=${forecast.dt_txt}`)}
                 className="list-group-item list-group-item-action" 
             >
                 <div className="row">
-                    <div className="col-4">
-                        <span className="date">{getFormattedDate(forecast.dt_txt)}</span><br />
-                        <span className="condition">{forecast.weather[0].description}</span><br />
+                    <div className="col-sm-4">
+                        <div className="date">
+                            {moment(forecast.dt_txt).format("dddd DD MMMM YYYY")}
+                        </div>
+                        <div className="condition">
+                            {forecast.weather[0].description}
+                        </div>
                     </div>
-                    <div className="col-4">
+                    <div className="col-sm-4">
                         <b>Temp High:</b> {parseInt(forecast.main.temp_max / 10)}&#8451;<br />
                         <b>Temp Low:</b> {parseInt(forecast.main.temp_min / 10)}&#8451;<br />
                     </div>
-                    <div className="col-4">
+                    <div className="col-sm-4">
                         <b>Wind</b> {forecast.wind.speed} m/s<br />
                         <b>Clouds:</b> {forecast.clouds.all}%
                     </div>

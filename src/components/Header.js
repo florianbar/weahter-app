@@ -12,13 +12,12 @@ const StyledLogo = styled.h1`
     margin: 0;
     padding: 0;
     font-size: 18px;
-    color: #1a73e8;
 `;
 
 const Header = () => {
     return (
         <StyledHeader>
-            <div className="container">
+            <div className="container-fluid">
                 <StyledLogo>My Weather App</StyledLogo>
             </div>
         </StyledHeader>
