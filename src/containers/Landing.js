@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import IPGeolocationAPI from 'ip-geolocation-api-javascript-sdk';
 
+import Input from '../components/UI/Input';
+import Button from '../components/UI/Button';
+
 const Landing = ({ history }) => {
     const [city, setCity] = useState(localStorage.getItem("city") || "");
 
     useEffect(() => {
-        if (!city) {
+        if (!city && !localStorage.getItem("city")) {
             var ipgeolocationApi = new IPGeolocationAPI(process.env.REACT_APP_IPGEOLOCATION_API_KEY, false); 
             ipgeolocationApi.getGeolocation(response => {
                 setCity(response.city);
@@ -22,14 +25,14 @@ const Landing = ({ history }) => {
     return (
         <div>
             <form onSubmit={submitHandler}>
-                <label>Where do you live?</label><br/>
-                <input 
+                <Input 
+                    label="Where do you live?"
                     type="text" 
                     placeholder="Cape Town"
                     value={city}
-                    onChange={event => setCity(event.target.value)} 
+                    change={event => setCity(event.target.value)} 
                 />
-                <button>View Forecast</button>
+                <Button>View Forecast</Button>
             </form>
         </div>
     );

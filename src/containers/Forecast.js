@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { WeatherContext } from '../context/weather-context';
+import WeatherList from '../components/WeatherList';
 
 const Forecast = ({ location }) => {
     const city = new URLSearchParams(location.search).get("city");
@@ -16,29 +17,20 @@ const Forecast = ({ location }) => {
         fetchForecastData(city);
     }, [fetchForecastData, city]);
 
-    let forecastList = null;
-    if (forecast) {
-        forecastList = getWeekForecast(forecast).map(forecast => {
-            return (
-                <li key={forecast.dt}>
-                    <Link to={`/forecast/day?city=${city}&date=${forecast.dt_txt}`}>
-                        {forecast.dt_txt}<br />
-                        {forecast.weather[0].description}
-                    </Link>
-                </li>
-            );
-        });
-    }
+    let weekForecast = forecast ? getWeekForecast(forecast) : null;
 
     return (
         <div>
-            <Link to="/">Change location</Link>
-            <h1>{city}</h1>
-            {!forecast ? "Loading forecast..." : (
-                <ul>
-                    {forecastList}
-                </ul>
-            )}
+            <div className="row mb-3">
+                <div className="col-sm">
+                    <h1>Forecast for {city}</h1>
+                </div>
+                <div className="col-sm-auto">
+                    <Link to="/" className="btn btn-sm btn-secondary mt-3">Change Location</Link>
+                </div>
+            </div>
+            
+            {!forecast ? "Loading forecast..." : <WeatherList city={city} forecast={weekForecast} /> }
         </div>
     );
 };
