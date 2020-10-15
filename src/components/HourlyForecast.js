@@ -10,11 +10,11 @@ const HourlyForecast = ({ forecast }) => {
         return (
             <ListGroupItem 
                 key={forecast.dt}
-                className="shadow-sm"
+                className="font-13"
             >
                 <Row>
-                    <Col sm="3">
-                        <Row noGutters>
+                    <Col sm="6">
+                        <Row>
                             <Col sm={{ size: 'auto' }}>
                                 <WeatherIcon 
                                     iconCode={forecast.weather[0].icon} 
@@ -23,27 +23,21 @@ const HourlyForecast = ({ forecast }) => {
                                 />
                             </Col>
                             <Col>
-                                <span className="ml-2 text-capitalize">{forecast.weather[0].description}</span>
+                                <FasIcon icon="fa-clock" color="#ccc" className="mr-2" />
+                                <b>{moment(forecast.dt_txt).format("HH")}:00</b><br />
+                                <span className="text-capitalize">{forecast.weather[0].description}</span>
                             </Col>
                         </Row>
                     </Col>
                     <Col>
-                        <FasIcon icon="fa-clock" color="#ccc" className="mr-2" />
-                        <b>{moment(forecast.dt_txt).format("HH")}:00</b>
-                    </Col>
-                    <Col>
                         <FasIcon icon="fa-arrow-up" color="red" className="mr-2" /> 
-                        {parseInt(forecast.main.temp_max / 10)}&#8451;
-                    </Col>
-                    <Col>
+                        {parseInt(forecast.main.temp_max / 10)}&#8451;<br />
                         <FasIcon icon="fa-arrow-down" color="#007bff" className="mr-2" /> 
                         {parseInt(forecast.main.temp_min / 10)}&#8451;
                     </Col>
                     <Col>
                         <FasIcon icon="fa-wind" color="#07cdff" className="mr-2" />
                         {forecast.wind.speed} m/s<br />
-                    </Col>
-                    <Col>
                         <FasIcon icon="fa-cloud" color="#ccc" className="mr-2" />
                         {forecast.clouds.all}%
                     </Col>

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { WeatherContext } from '../context/weather-context';
 import HourlyForecast from '../components/HourlyForecast';
 import FasIcon from '../components/Icons/FasIcon';
+import RechartAreaChart from '../components/Recharts/AreaChart';
 
 const DayForecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
@@ -34,11 +35,32 @@ const DayForecast = ({ history, location }) => {
         </div>
     );
     if (forecast) {
+        const dayForecast = getDayForecast(forecast, date);
+        const chartData = dayForecast.map(forecast => {
+            return {
+                name: moment(forecast.dt_txt).format("HH") + ":00",
+                uv: parseInt(forecast.main.temp_max / 10)
+            };
+        });
         content = (
-            <HourlyForecast 
-                city={city} 
-                forecast={getDayForecast(forecast, date)} 
-            />
+            <React.Fragment>
+                <Row>
+                    <Col>
+                        <div className="mb-3">
+                            <h4 className="mb-3">Weather Map</h4>
+                            Map goes here
+                        </div>
+                        <div className="mb-3">
+                            <h4 className="mb-3">Temperature</h4>
+                            <RechartAreaChart data={chartData} />
+                        </div>
+                    </Col>
+                    <Col>
+                        <h4 className="mb-3">Hourly</h4>
+                        <HourlyForecast city={city} forecast={dayForecast} />
+                    </Col>
+                </Row>
+            </React.Fragment>
         );
     }
 
@@ -62,7 +84,7 @@ const DayForecast = ({ history, location }) => {
                 </Col>
             </Row>
             {content}
-        </React.Fragment>
+        </React.Fragment> 
     );
 };
 

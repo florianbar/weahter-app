@@ -2,3 +2,7 @@ body {
   background-color: #eee;
   color: #333;
 }
+
+.font-13 {
+  font-size: 13px !important;
+}

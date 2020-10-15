@@ -14,7 +14,6 @@ const WeekForecast = ({ history, city, forecast }) => {
                 tag="button"
                 action 
                 onClick={() => history.push(`/forecast/day?city=${city}&date=${forecast.dt_txt}`)}
-                className="shadow-sm"
             >
                 <Row>
                     <Col sm="6">
