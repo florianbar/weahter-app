@@ -2,8 +2,8 @@ import React from 'react';
 import { Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
 import moment from 'moment';
 
-import WeatherIcon from '../components/WeatherIcon';
-import FasIcon from '../components/FasIcon';
+import WeatherIcon from './Icons/WeatherIcon';
+import FasIcon from './Icons/FasIcon';
 
 const HourlyForecast = ({ forecast }) => {
     const list = forecast.map(forecast => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Form, InputGroup, Input, InputGroupAddon, Spinner } from 'reactstrap';
 import IPGeolocationAPI from 'ip-geolocation-api-javascript-sdk';
 
-import FasIcon from '../components/FasIcon';
+import FasIcon from '../components/Icons/FasIcon';
 
 const Landing = ({ history }) => {
     const [city, setCity] = useState(localStorage.getItem("city") || "");

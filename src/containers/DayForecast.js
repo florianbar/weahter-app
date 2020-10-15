@@ -4,11 +4,16 @@ import moment from 'moment';
 
 import { WeatherContext } from '../context/weather-context';
 import HourlyForecast from '../components/HourlyForecast';
-import FasIcon from '../components/FasIcon';
+import FasIcon from '../components/Icons/FasIcon';
 
 const DayForecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
     const date = new URLSearchParams(location.search).get("date");
+
+    if (!city || !date) {
+        // Redirect back home if queryParams don't exist
+        history.replace("/");
+    }
 
     const { 
         forecast, 

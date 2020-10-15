@@ -3,10 +3,15 @@ import { Row, Col, Button, Spinner } from 'reactstrap';
 
 import { WeatherContext } from '../context/weather-context';
 import WeekForecast from '../components/WeekForecast';
-import FasIcon from '../components/FasIcon';
+import FasIcon from '../components/Icons/FasIcon';
 
 const Forecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
+    
+    if (!city) {
+        // Redirect back home if queryParams don't exist
+        history.replace("/"); 
+    }
 
     const { 
         forecast, 
