@@ -8,13 +8,9 @@ import FasIcon from '../components/Icons/FasIcon';
 const Forecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
     
-    if (!city) {
-        // Redirect back home if queryParams don't exist
-        history.replace("/"); 
-    }
-
     const { 
         forecast, 
+        error,
         fetchForecastData, 
         getWeekForecast 
     } = useContext(WeatherContext);
@@ -23,6 +19,13 @@ const Forecast = ({ history, location }) => {
         fetchForecastData(city);
     }, [fetchForecastData, city]);
 
+    if (!city || error) {
+        // Redirect back home if: 
+        // - queryParams don't exist
+        // - if there was an error
+        history.replace("/"); 
+    }
+
     let content = (
         <div className="text-center">
             <Spinner color="primary" size="lg" />
@@ -30,33 +33,31 @@ const Forecast = ({ history, location }) => {
     );
     if (forecast) {
         content = (
-            <WeekForecast 
-                city={city} 
-                forecast={getWeekForecast(forecast)} 
-            />
+            <React.Fragment>
+                <Row className="mb-3">
+                    <Col>
+                        <h2>{city}</h2>
+                    </Col>
+                    <Col sm={{ size: 'auto' }}>
+                        <Button 
+                            color="primary" 
+                            size="sm" 
+                            onClick={() => history.push('/')}
+                        >
+                            <FasIcon icon="fa-location-arrow" className="mr-2" />
+                            Change Location
+                        </Button>
+                    </Col>
+                </Row>
+                <WeekForecast 
+                    city={city} 
+                    forecast={getWeekForecast(forecast)} 
+                />
+            </React.Fragment>
         );
     }
 
-    return (
-        <React.Fragment>
-            <Row className="mb-3">
-                <Col>
-                    <h2>{city}</h2>
-                </Col>
-                <Col sm={{ size: 'auto' }}>
-                    <Button 
-                        color="primary" 
-                        size="sm" 
-                        onClick={() => history.push('/')}
-                    >
-                        <FasIcon icon="fa-location-arrow" className="mr-2" />
-                        Change Location
-                    </Button>
-                </Col>
-            </Row>
-            {content}
-        </React.Fragment>
-    );
+    return content;
 };
 
 export default Forecast;

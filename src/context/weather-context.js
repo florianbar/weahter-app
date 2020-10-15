@@ -3,25 +3,35 @@ import axios from 'axios';
 
 export const WeatherContext = React.createContext({
     forecast: [],
+    error: false,
+    loading: false,
     fetchForecastData: () => {},
     getWeekForecast: () => {},
     getDayForecast: () => {}
 });
 
-export default props => {
+export default ({ children }) => {
     const [forecast, setForecast] = useState(null);
+    const [loading, setLoading] = useState(null);
+    const [error, setError] = useState(null);
 
     const fetchForecastData = useCallback(city => {
+        setForecast(null);
+        setLoading(true);
+        setError(false);
+
         const queryParams = `?q=${city}&appid=${process.env.REACT_APP_OPENWEATHER_APP_KEY}&units=metric`;
         axios.get("https://api.openweathermap.org/data/2.5/forecast" + queryParams)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
+                setLoading(false);
                 setForecast(response.data.list);
             })
             .catch(error => {
-                console.log(error);
+                setLoading(false);
+                setError(true);
             });
-    }, [setForecast]);
+    }, [setForecast, setLoading, setError]);
 
     const getWeekForecast = forecast => {
         let date = new Date(forecast[0].dt_txt);
@@ -48,11 +58,13 @@ export default props => {
     return (
         <WeatherContext.Provider value={{
             forecast: forecast,
+            loading: loading,
+            error: error,
             fetchForecastData: fetchForecastData,
             getWeekForecast: getWeekForecast,
             getDayForecast: getDayForecast
         }}>
-            {props.children}
+            {children}
         </WeatherContext.Provider>
     );
 };

@@ -11,13 +11,9 @@ const DayForecast = ({ history, location }) => {
     const city = new URLSearchParams(location.search).get("city");
     const date = new URLSearchParams(location.search).get("date");
 
-    if (!city || !date) {
-        // Redirect back home if queryParams don't exist
-        history.replace("/");
-    }
-
     const { 
         forecast, 
+        error,
         fetchForecastData, 
         getDayForecast 
     } = useContext(WeatherContext);
@@ -28,6 +24,13 @@ const DayForecast = ({ history, location }) => {
             fetchForecastData(city);
         }
     }, [forecast, fetchForecastData, city]);
+
+    if (!city || !date || error) {
+        // Redirect back home if: 
+        // - queryParams don't exist
+        // - if there was an error
+        history.replace("/"); 
+    }
 
     let content = (
         <div className="text-center">
@@ -44,6 +47,23 @@ const DayForecast = ({ history, location }) => {
         });
         content = (
             <React.Fragment>
+                <Row className="mb-3">
+                    <Col>
+                        <h2>
+                            {city} <small>| {moment(date).format("dddd DD MMMM YYYY")}</small>
+                        </h2>
+                    </Col>
+                    <Col sm={{ size: 'auto' }}>
+                        <Button 
+                            color="primary" 
+                            size="sm" 
+                            onClick={() => history.push(`/forecast?city=${city}`)}
+                        >
+                            <FasIcon icon="fa-calendar-day" className="mr-2" />
+                            Change Day
+                        </Button>
+                    </Col>
+                </Row>
                 <div className="mb-3">
                     <h4 className="mb-3">Temperature</h4>
                     <RechartAreaChart data={chartData} />
@@ -54,28 +74,7 @@ const DayForecast = ({ history, location }) => {
         );
     }
 
-    return (
-        <React.Fragment>
-            <Row className="mb-3">
-                <Col>
-                    <h2>
-                        {city} <small>| {moment(date).format("dddd DD MMMM YYYY")}</small>
-                    </h2>
-                </Col>
-                <Col sm={{ size: 'auto' }}>
-                    <Button 
-                        color="primary" 
-                        size="sm" 
-                        onClick={() => history.push(`/forecast?city=${city}`)}
-                    >
-                        <FasIcon icon="fa-calendar-day" className="mr-2" />
-                        Change Day
-                    </Button>
-                </Col>
-            </Row>
-            {content}
-        </React.Fragment> 
-    );
+    return content;
 };
 
 export default DayForecast;
