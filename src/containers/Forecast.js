@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { Redirect} from 'react-router-dom';
 import { Row, Col, Button, Spinner } from 'reactstrap';
 
 import { WeatherContext } from '../context/weather-context';
@@ -6,25 +7,13 @@ import WeekForecast from '../components/WeekForecast';
 import FasIcon from '../components/Icons/FasIcon';
 
 const Forecast = ({ history, location }) => {
-    const city = new URLSearchParams(location.search).get("city");
+    const cityParam = new URLSearchParams(location.search).get("city");
     
-    const { 
-        forecast, 
-        error,
-        fetchForecastData, 
-        getWeekForecast 
-    } = useContext(WeatherContext);
+    const { forecast, error, fetchForecastData, getWeekForecast } = useContext(WeatherContext);
 
     useEffect(() => {
-        fetchForecastData(city);
-    }, [fetchForecastData, city]);
-
-    if (!city || error) {
-        // Redirect back home if: 
-        // - queryParams don't exist
-        // - if there was an error
-        history.replace("/"); 
-    }
+        fetchForecastData(cityParam);
+    }, [fetchForecastData, cityParam]);
 
     let content = (
         <div className="text-center">
@@ -36,7 +25,7 @@ const Forecast = ({ history, location }) => {
             <React.Fragment>
                 <Row className="mb-3">
                     <Col>
-                        <h2>{city}</h2>
+                        <h2>{cityParam}</h2>
                     </Col>
                     <Col sm={{ size: 'auto' }}>
                         <Button 
@@ -50,14 +39,14 @@ const Forecast = ({ history, location }) => {
                     </Col>
                 </Row>
                 <WeekForecast 
-                    city={city} 
+                    city={cityParam} 
                     forecast={getWeekForecast(forecast)} 
                 />
             </React.Fragment>
         );
     }
 
-    return content;
+    return (!cityParam || error) ? <Redirect to="/" /> : content;
 };
 
 export default Forecast;
