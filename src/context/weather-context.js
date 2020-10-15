@@ -12,7 +12,7 @@ export default props => {
     const [forecast, setForecast] = useState(null);
 
     const fetchForecastData = useCallback(city => {
-        const queryParams = `?q=${city}&appid=${process.env.REACT_APP_OPENWEATHER_APP_KEY}`;
+        const queryParams = `?q=${city}&appid=${process.env.REACT_APP_OPENWEATHER_APP_KEY}&units=metric`;
         axios.get("https://api.openweathermap.org/data/2.5/forecast" + queryParams)
             .then(response => {
                 console.log(response.data);

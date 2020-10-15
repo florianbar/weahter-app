@@ -33,11 +33,11 @@ const WeekForecast = ({ history, city, forecast }) => {
                     <Col sm="3">
                         <div>
                             <FasIcon icon="fa-arrow-up" color="red" className="mr-2" /> 
-                            <b>Temp High:</b> {parseInt(forecast.main.temp_max / 10)}&#8451;
+                            <b>Temp High:</b> {parseInt(forecast.main.temp_max)}&#8451;
                         </div>
                         <div>
                             <FasIcon icon="fa-arrow-down" color="#007bff" className="mr-2" /> 
-                            <b>Temp Low:</b> {parseInt(forecast.main.temp_min / 10)}&#8451;
+                            <b>Temp Low:</b> {parseInt(forecast.main.temp_min)}&#8451;
                         </div>
                     </Col>
                     <Col sm="3">
