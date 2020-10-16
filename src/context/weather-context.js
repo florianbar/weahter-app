@@ -18,7 +18,7 @@ export default ({ children }) => {
         setForecast(null);
         setError(false);
 
-        const queryParams = `?q=${cityName}&appid=${process.env.REACT_APP_OPENWEATHER_APP_KEY}&units=metric`;
+        const queryParams = `?q=${cityName}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}&units=metric`;
         //console.log(queryParams);
         axios.get("https://api.openweathermap.org/data/2.5/forecast" + queryParams)
             .then(response => {
