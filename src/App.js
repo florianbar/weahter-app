@@ -9,14 +9,14 @@ import DayForecast from './containers/DayForecast';
 
 const App = () => {
   return (
-    <div className="App">
+    <div data-test="component-app" className="App">
       <Container className="mt-4">
-        <WeatherProvider>
-          <Switch>
-            <Route path="/forecast/day" component={DayForecast} />
-            <Route path="/forecast" component={Forecast} />
-            <Route path="/" component={Landing} />
-            <Redirect to="/" />
+        <WeatherProvider data-test="weather-provider">
+          <Switch data-test="switch">
+            <Route path="/forecast/day" component={DayForecast} data-test="day-forecast" />
+            <Route path="/forecast" component={Forecast} data-test="forecast" />
+            <Route path="/" component={Landing} data-test="landing" />
+            <Redirect to="/" data-test="redirect" />
           </Switch>
         </WeatherProvider>
       </Container>
